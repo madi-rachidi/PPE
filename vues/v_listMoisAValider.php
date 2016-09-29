@@ -1,7 +1,7 @@
 ﻿ <div id="contenu">
-      <h2>Liste des fiches de frais a valider</h2>
+      <h2>Mois de frais a valider</h2>
       <h3>Mois à sélectionner : </h3>
-      <form action="index.php?uc=etatFrais&action=voirFraisAValider" method="post">
+      <form action="index.php?uc=fraisAValider&action=voirFraisAValider" method="post">
       <div class="corpsForm">
          
       <p>

@@ -25,7 +25,7 @@
            <?php
            if($_SESSION['type'] == "comptable"):?>
             <li class="smenu">
-              <a href="index.php?uc=etatFrais&action=selectionnerMoisAValider" title="voir fiche de frais a valider">voir fiche de frais a valider</a> 
+              <a href="index.php?uc=fraisAValider&action=selectionnerMoisAValider" title="voir fiche de frais a valider">voir fiche de frais a valider</a> 
              <?php  endif; ?>
              </li>
            <!-------------------------------------------------->

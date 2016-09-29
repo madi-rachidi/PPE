@@ -140,6 +140,17 @@ class PdoGsb{
 		$lesLignes = $res->fetchAll();
 		return $lesLignes;
 	}
+        /**
+         * 
+         * @return un tableau avec les ficeh frais a valider***********************************************************
+         */
+        public function getLesFicheFraisAValider($mois){
+		$req = "SELECT `idVisiteur`, visiteur.nom, visiteur.prenom FROM `fichefrais` INNER JOIN visiteur 
+                        WHERE `idEtat`= 'CR' AND `mois`= '$mois' AND fichefrais.`idVisiteur` = visiteur.`id`";
+		$res = PdoGsb::$monPdo->query($req);
+		$ligne = $res->fetchAll();
+		return $ligne;
+	}
 /**
  * Met à jour la table ligneFraisForfait
  
