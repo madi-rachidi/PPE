@@ -1,7 +1,7 @@
 ﻿ <div id="contenu">
       <h2>Mois de frais a valider</h2>
       <h3>Mois à sélectionner : </h3>
-      <form action="index.php?uc=fraisAValider&action=voirFraisAValider" method="post">
+      <form action="index.php?uc=fraisAValider&action=visiteurFraisAValider" method="post">
       <div class="corpsForm">
          
       <p>

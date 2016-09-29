@@ -14,21 +14,19 @@
 		 <?php
         }
 		?>
-		</tr>
+	</tr>
         <tr>
         <?php
-        
           foreach ($aValider as list($a, $b, $c)) {
-                      // $a contient le premier élément du tableau interne,
-                     // et $b contient le second élément.
-                        echo "A: $a; B: $b; C: $c\n  ";
-                
-		?>
-                <td class="qteForfait"><?php echo $a?><?php echo $b?><?php echo $c?></td>
+            ?>
+            <td class="qteForfait"> <a href="<?php echo"index.php?uc=fraisAValider&action=voiFraisAValider&valeur=".$a ?>" > <?php echo $a?></a></td>
+            <td class="qteForfait"><?php echo $b?></td>
+            <td class="qteForfait"><?php echo $c?></td>
+         </tr>
 		 <?php
           }
 		?>
-		</tr>
+	
     </table>
   	
   </div>

@@ -13,13 +13,12 @@ switch($action){
 		include("vues/v_listMoisAValider.php");
 		break;
         }
-        case 'voirFraisAValider':{
+        case 'visiteurFraisAValider':{
             	$lesMois=$pdo->getLesMoisAValider();
                 $leMois = $_REQUEST['lstMois'];
 		$lesCles = array_keys( $lesMois );
 		$moisASelectionner = $leMois;
-                echo"le mois a selct";
-               /* var_dump($moisASelectionner);*/
+               /* var_dump($moisASelectionner);*/ //debug
 		include("vues/v_listMoisAValider.php");
 		$aValider=$pdo->getLesFicheFraisAValider($leMois);
                 $title = [IdVisiteur, Nom, Prenom]; // pour l'affichage
@@ -38,6 +37,17 @@ switch($action){
 }*/
 		
             }
+        case "voiFraisAValider":{
+            $lesMois=$pdo->getLesMoisAValider();
+                $leMois = $_REQUEST['lstMois'];
+		$lesCles = array_keys( $lesMois );
+		$moisASelectionner = $leMois;
+            echo"en fab oklm et ";
+            
+            echo"$_GET[$valeur]";
+            
+            
         }
+       }
 
 ?>
