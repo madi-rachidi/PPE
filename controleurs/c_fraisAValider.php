@@ -37,11 +37,22 @@ switch($action){
         case "voirFraisAValider":{
                  $valeur = $_REQUEST["valeur"];
                  $leMois = $_REQUEST["date"];
+                 /**/
+                 $numAnnee =substr( $leMois,0,4); /*modifie le formatage de l'année*/
+		$numMois =substr( $leMois,4,2); /*modifie le formatage du mois*/
+                /**/
+                $lesMois=$pdo->getLesMoisAValider();
+		$lesCles = array_keys( $lesMois );
+		$moisASelectionner = $leMois;
+                /**/
                  var_dump($valeur);
                  var_dump($leMois);
+                 $aValider=$pdo->getLesFicheFraisAValider($leMois);
+                 include("vues/v_listMoisAValider.php");
+                 include("vues/v_afficheVisiteur.php");
+                 include("vues/v_validerFiche.php");
                  /**/
-            
-                 /**/
+                 /*
                 $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($valeur,$leMois);
 		$lesFraisForfait= $pdo->getLesFraisForfait($valeur,$leMois);
 		$lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($valeur,$leMois);
@@ -52,7 +63,9 @@ switch($action){
 		$nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
 		$dateModif =  $lesInfosFicheFrais['dateModif'];
 		$dateModif =  dateAnglaisVersFrancais($dateModif);
-		include("vues/v_etatFrais.php");   
+		include("vues/v_etatFrais.php"); 
+                */
+                 
         }
        }
 
