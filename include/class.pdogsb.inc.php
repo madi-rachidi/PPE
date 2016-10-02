@@ -338,8 +338,28 @@ class PdoGsb{
  */
  
 	public function majEtatFicheFrais($idVisiteur,$mois,$etat){
-		$req = "update ficheFrais set idEtat = '$etat', dateModif = now() 
+		$req = "update fichefrais set idEtat = '$etat', dateModif = now() 
 		where fichefrais.idvisiteur ='$idVisiteur' and fichefrais.mois = '$mois'";
+		PdoGsb::$monPdo->exec($req);
+	}
+        /**********************partie comptable*************************************/
+        public function majValeurFicheFrais($idVisiteur,$mois,$ETP,$KM,$NUI,$REP){
+		$req = "update lignefraisforfait set `quantite`  = '$ETP' 
+                        where lignefraisforfait.idvisiteur ='$idVisiteur' 
+                        and lignefraisforfait.mois = '$mois'
+                        and `idFraisForfait`='ETP';
+                        update lignefraisforfait set `quantite`  = '$KM' 
+                        where lignefraisforfait.idvisiteur ='$idVisiteur' 
+                        and lignefraisforfait.mois = '$mois'
+                        and `idFraisForfait`='KM';
+                        update lignefraisforfait set `quantite`  = '$NUI' 
+                        where lignefraisforfait.idvisiteur ='$idVisiteur' 
+                        and lignefraisforfait.mois = '$mois'
+                        and `idFraisForfait`='NUI';
+                        update lignefraisforfait set `quantite`  = '$REP' 
+                        where lignefraisforfait.idvisiteur ='$idVisiteur' 
+                        and lignefraisforfait.mois = '$mois'
+                                    and `idFraisForfait`='REP';";
 		PdoGsb::$monPdo->exec($req);
 	}
 }
