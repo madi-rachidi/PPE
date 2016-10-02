@@ -34,15 +34,13 @@ switch($action){
                 include("vues/v_afficheVisiteur.php");
                 break;
             }
-        case "voiFraisAValider":{
+        case "voirFraisAValider":{
                  $valeur = $_REQUEST["valeur"];
                  $leMois = $_REQUEST["date"];
                  var_dump($valeur);
                  var_dump($leMois);
                  /**/
-                 $leMois = $_REQUEST['lstMois']; 
-		$lesMois=$pdo->getLesMoisDisponibles($idVisiteur);
-		$moisASelectionner = $leMois;
+            
                  /**/
                 $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($valeur,$leMois);
 		$lesFraisForfait= $pdo->getLesFraisForfait($valeur,$leMois);
@@ -54,9 +52,7 @@ switch($action){
 		$nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
 		$dateModif =  $lesInfosFicheFrais['dateModif'];
 		$dateModif =  dateAnglaisVersFrancais($dateModif);
-		include("vues/v_etatFrais.php");
-            
-            
+		include("vues/v_etatFrais.php");   
         }
        }
 

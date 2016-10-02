@@ -11,6 +11,7 @@ switch($action){
 	case 'valideConnexion':{
 		$login = $_REQUEST['login'];
 		$mdp = $_REQUEST['mdp'];
+               // $mdp = sha1($mdp);
 		$comptable = $pdo->getInfosComptable($login,$mdp); /*création d'un variable comptable*/
 	/*var_dump($comptable);	*/ //debug	
 		$visiteur = $pdo->getInfosVisiteur($login,$mdp);
