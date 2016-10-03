@@ -1,6 +1,6 @@
 <h3>Fiche de frais a valider du mois <?php  echo $numMois."-".$numAnnee ?> : 
     </h3>
- // pour l'affichage
+ <!-- pour l'affichage -->
     <?php  $title = ["Idvisiteur","Nom", "Prenom"]; ?>
     <div class="encadre">
   	<table class="listeLegere">

@@ -73,19 +73,24 @@ switch ($action) {
         $km     = $_POST['km'];
         $id     = $_REQUEST["idvisiteur"];
         $leMois = $_REQUEST["date"];
-        $datetxt = $_REQUEST["hfDate1"];
-        $libele = $_REQUEST["hfLib1"];
-        echo "$libele";
         // test afin de voir si toute les valeur son bien saisie
         if (($repas && $nuitee && $etape && $km && $id && $leMois) != null) {
             $pdo->majValeurFicheFrais($id, $leMois, $etape, $km, $nuitee, $repas);
             echo "enregistrement prit en compte";
+            
+           /* include("vues/v_validerFiche.php");*/
         } else {
             ajouterErreur("Valeur non saisie");
             include("vues/v_erreurs.php");
         }
         break;
     }
+    case 'supprimerFrais':{
+		$idFrais = $_REQUEST['idFrais'];
+	    $pdo->supprimerFraisHorsForfait($idFrais);
+		break;
+	}
+    
 }
 
 ?>
