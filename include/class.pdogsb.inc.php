@@ -256,8 +256,7 @@ class PdoGsb{
 */
 	public function creeNouveauFraisHorsForfait($idVisiteur,$mois,$libelle,$date,$montant){
 		$dateFr = dateFrancaisVersAnglais($date);
-		$req = "insert into lignefraishorsforfait 
-		values('','$idVisiteur','$mois','$libelle','$dateFr','$montant')";
+		$req = "insert into lignefraishorsforfait values('','$idVisiteur','$mois','$libelle','$dateFr','$montant','VAL')";
 		PdoGsb::$monPdo->exec($req);
 	}
 /**
@@ -268,6 +267,18 @@ class PdoGsb{
 	public function supprimerFraisHorsForfait($idFrais){
 		$req = "delete from lignefraishorsforfait where lignefraishorsforfait.id =$idFrais ";
 		PdoGsb::$monPdo->exec($req);
+	}
+        
+	public function refuserFraisHorsForfait($idFrais){
+		$req = "UPDATE lignefraishorsforfait set situation = 'REF' where lignefraishorsforfait.id =$idFrais ";
+		PdoGsb::$monPdo->exec($req);
+	}
+        /*voir les frais hors forfait qui sont refusés*/
+        public function voirFraisRefuse($idFrais){
+		$req = "SELECT situation FROM lignefraishorsforfait WHERE lignefraishorsforfait.id =$idFrais";
+		$res = PdoGsb::$monPdo->query($req);
+                $resu = $res->fetchAll();
+                return $resu;
 	}
 /**
  * Retourne les mois pour lesquel un visiteur a une fiche de frais
@@ -362,5 +373,11 @@ class PdoGsb{
                                     and `idFraisForfait`='REP';";
 		PdoGsb::$monPdo->exec($req);
 	}
+        public function reporterFraisHorsForfait($idFrais){
+            $req = "select mois From lignefraishorsforfait where id =$idFrais";
+		$res = PdoGsb::$monPdo->query($req);
+		$laLigne = $res->fetch();
+               echo $laLigne[0];
+        }
 }
 ?>
