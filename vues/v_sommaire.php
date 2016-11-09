@@ -26,6 +26,10 @@
            if($_SESSION['type'] == "comptable"):?>
             <li class="smenu">
               <a href="index.php?uc=fraisAValider&action=selectionnerMoisAValider" title="voir fiche de frais a valider">voir fiche de frais a valider</a> 
+              
+              <li class="smenu">
+              <a href="index.php?uc=fraisAValider&action=suiviPaiement" title="suiviPaiement">Suivi paiement</a>
+              <li>
              <?php  endif; ?>
              </li>
            <!-------------------------------------------------->

@@ -93,6 +93,13 @@ switch ($action) {
     case 'refuserFrais':{
 	$idFrais = $_REQUEST['idFrais'];
         $pdo ->refuserFraisHorsForfait($idFrais);
+        break; 
+        }
+        case 'suiviPaiement':{
+	$listeFichesFrais=$pdo->getFicheFraisSuivre();
+        echo"wei";
+		include("vues/v_suiviFiche.php");
+                break;
         break;
 	 
         }

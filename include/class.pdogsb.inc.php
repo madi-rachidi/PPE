@@ -377,7 +377,28 @@ class PdoGsb{
             $req = "select mois From lignefraishorsforfait where id =$idFrais";
 		$res = PdoGsb::$monPdo->query($req);
 		$laLigne = $res->fetch();
-               echo $laLigne[0];
+                $annee = $laLigne[0];
+               $mois = substr("$annee",4);
+               $annee = substr("$annee",0,-2);
+               
+               if ($mois < 12){
+                   $mois = $mois+1;  
+               }else{
+                   $mois=01;
+                   $annee = $annee+1; 
+               }
+               $date = $annee.$mois;
+               echo $date;
+               
+               // faire une requete update qui va modier la date de plusieurs element de la base par date
         }
+            public function getFicheFraisSuivre() {
+            $req = PdoGsb::$monPdo->prepare("select fichefrais.idVisiteur as v_id, fichefrais.mois as v_mois, fichefrais.montantValide as v_montant, fichefrais.idEtat, visiteur.nom as v_nom, visiteur.prenom as v_prenom
+                   from fichefrais join visiteur on fichefrais.idVisiteur = visiteur.id
+                   where idEtat = 'VA' order by mois desc");
+            $req->execute();
+            $fiche = $req->fetchAll();
+            return $fiche;
+    }
 }
 ?>
