@@ -17,6 +17,7 @@ switch($action){
 		$lesFrais = $_REQUEST['lesFrais'];
 		if(lesQteFraisValides($lesFrais)){
 	  	 	$pdo->majFraisForfait($idVisiteur,$mois,$lesFrais);
+                        $pdo->montantValide($idVisiteur,$mois);
 		}
 		else{
 			ajouterErreur("Les valeurs des frais doivent être numériques");

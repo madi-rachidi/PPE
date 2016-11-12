@@ -41,7 +41,9 @@
 		<th class="libelle">Libellé</th>  
                 <th class="montant">Montant</th> 
                 <th class="libelle">Situation</th>
-                <th class="action">&nbsp;</th>              
+                <th class="action">&nbsp;</th>    
+                <th class="libelle"> </th>
+                <th class="action"> </th> 
              </tr>
           
     <?php    
@@ -61,6 +63,7 @@
                  
                 <td><a href="index.php?uc=fraisAValider&action=refuserFrais&idFrais=<?php echo $id ?>"onclick="return confirm('Voulez-vous vraiment refuser ce frais?');">refuser ce frais</a></td>
                 <td><a href="index.php?uc=fraisAValider&action=reporterFrais&idFrais=<?php echo $id ?>"onclick="return confirm('Voulez-vous vraiment reporter ce frais?');">reporter ce frais</a></td>
+                <td><a href="index.php?uc=fraisAValider&action=validerFrais&idFrais=<?php echo $id ?>"onclick="return confirm('Voulez-vous vraiment valider ce frais?');">valider ce frais</a></td>
              </tr>
              	<?php		 
           }
