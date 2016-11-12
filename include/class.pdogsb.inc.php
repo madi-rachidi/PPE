@@ -516,6 +516,7 @@ class PdoGsb {
         $pdf->ImprovedTable($header, $data);
         $pdf->AddPage();
         $pdf->FancyTable($header, $data);
+        ob_end_clean();//supprime le caché
         $pdf->Output();
     }
 }
