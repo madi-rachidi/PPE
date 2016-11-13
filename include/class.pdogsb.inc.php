@@ -127,8 +127,8 @@ class PdoGsb {
      * @return l'id, le libelle et la quantité sous la forme d'un tableau associatif 
      */
     public function getLesFraisForfait($idVisiteur, $mois) {
-        $req = "select fraisforfait.id as idfrais, fraisforfait.libelle as libelle, 
-		lignefraisforfait.quantite as quantite from lignefraisforfait inner join fraisforfait 
+        $req = "select fraisforfait.id as idfrais, fraisforfait.libelle as libelle,
+		lignefraisforfait.quantite as quantite,fraisforfait.montant as montant from lignefraisforfait inner join fraisforfait 
 		on fraisforfait.id = lignefraisforfait.idfraisforfait
 		where lignefraisforfait.idvisiteur ='$idVisiteur' and lignefraisforfait.mois='$mois' 
 		order by lignefraisforfait.idfraisforfait";
@@ -285,13 +285,18 @@ class PdoGsb {
         $req = "UPDATE lignefraishorsforfait set situation = 'REF' where lignefraishorsforfait.id =$idFrais ";
         PdoGsb::$monPdo->exec($req);
     }
-    public function validerFraisHorsForfait($idFrais){
+
+    public function validerFraisHorsForfait($idFrais) {
         $req = "UPDATE lignefraishorsforfait set situation = 'VAL' where lignefraishorsforfait.id =$idFrais ";
         PdoGsb::$monPdo->exec($req);
     }
 
     public function rembourserFraisForfait($id, $mois) {
         $req = "UPDATE fichefrais set idEtat = 'RB' where idvisiteur ='$id' AND mois='$mois' ";
+        PdoGsb::$monPdo->exec($req);
+    }
+    public function mettreEnPaiement($id,$leMois){
+        $req = "UPDATE fichefrais set idEtat = 'VA' where idvisiteur ='$id' AND mois='$leMois' ";
         PdoGsb::$monPdo->exec($req);
     }
 
@@ -302,6 +307,13 @@ class PdoGsb {
         $res = PdoGsb::$monPdo->query($req);
         $resu = $res->fetchAll();
         return $resu;
+    }
+    public function getVehicule($id, $mois) {
+        $req = "SELECT vehicule FROM fichefrais WHERE fichefrais.idVisiteur ='$id' AND mois ='$mois'" ;
+        $res = PdoGsb::$monPdo->query($req);
+        $vehicule = $res->fetchAll();
+        $vehicule = $vehicule[0];
+        return $vehicule;
     }
 
     /**
@@ -445,59 +457,60 @@ class PdoGsb {
         //$nom = $rs->fetch();
         return $res;
     }
+
     /**
      * pertmet de mettre a jour montant reel des faire forfais
      * @param type $id
      * @param type $mois
      */
-    public function montantValide($id,$mois){
+    public function montantValide($id, $mois) {
         $req = "select quantite  from lignefraisforfait WHERE idVisiteur ='$id' AND mois='$mois' AND idFraisForfait = 'ETP'";
         $etp = PdoGsb::$monPdo->query($req);
-         $ETP = $etp->fetch();
-         $etp = $ETP[0];
-         /*kilometre*/
-         $req = "select quantite  from lignefraisforfait WHERE idVisiteur ='$id' AND mois='$mois' AND idFraisForfait = 'KM'";
+        $ETP = $etp->fetch();
+        $etp = $ETP[0];
+        /* kilometre */
+        $req = "select quantite  from lignefraisforfait WHERE idVisiteur ='$id' AND mois='$mois' AND idFraisForfait = 'KM'";
         $km = PdoGsb::$monPdo->query($req);
-         $KM = $km->fetch();
-         $km = $KM[0];
-         /*nuit*/
-         $req = "select quantite  from lignefraisforfait WHERE idVisiteur ='$id' AND mois='$mois' AND idFraisForfait = 'NUI'";
+        $KM = $km->fetch();
+        $km = $KM[0];
+        /* nuit */
+        $req = "select quantite  from lignefraisforfait WHERE idVisiteur ='$id' AND mois='$mois' AND idFraisForfait = 'NUI'";
         $nui = PdoGsb::$monPdo->query($req);
-         $NUI = $nui->fetch();
-         $nui = $NUI[0];
-         /*repass*/
-         $req = "select quantite  from lignefraisforfait WHERE idVisiteur ='$id' AND mois='$mois' AND idFraisForfait = 'REP'";
+        $NUI = $nui->fetch();
+        $nui = $NUI[0];
+        /* repass */
+        $req = "select quantite  from lignefraisforfait WHERE idVisiteur ='$id' AND mois='$mois' AND idFraisForfait = 'REP'";
         $rep = PdoGsb::$monPdo->query($req);
-         $REP= $rep->fetch();
-         $rep = $REP[0];
-         /*recuperation des motant des frais forfait*/
-         $req = "select montant  from fraisforfait WHERE id='ETP'";
+        $REP = $rep->fetch();
+        $rep = $REP[0];
+        /* recuperation des montant des frais forfait */
+        $req = "select montant  from fraisforfait WHERE id='ETP'";
         $m_etp = PdoGsb::$monPdo->query($req);
-         $M_ETP= $m_etp->fetch();
-         $m_etp = $M_ETP[0];
-         /*montant kilometrique*/
-         $req = "select montant  from fraisforfait WHERE id='KM'";
+        $M_ETP = $m_etp->fetch();
+        $m_etp = $M_ETP[0];
+        /* montant kilometrique */
+        $vehicule = $this->getVehicule($id, $mois);
+        $req = "select montant  from fraisforfait WHERE id='$vehicule[0]'";
         $m_km = PdoGsb::$monPdo->query($req);
-         $M_KM= $m_km->fetch();
-         $m_km = $M_KM[0];
-         /*montant nuit*/
-         $req = "select montant  from fraisforfait WHERE id='NUI'";
+        $M_KM = $m_km->fetch();
+        $m_km = $M_KM[0];
+        /* montant nuit */
+        $req = "select montant  from fraisforfait WHERE id='NUI'";
         $m_nui = PdoGsb::$monPdo->query($req);
-         $M_NUI= $m_nui->fetch();
-         $m_nui = $M_NUI[0];
-         /*repas*/
-         $req = "select montant  from fraisforfait WHERE id='REP'";
+        $M_NUI = $m_nui->fetch();
+        $m_nui = $M_NUI[0];
+        /* repas */
+        $req = "select montant  from fraisforfait WHERE id='REP'";
         $m_rep = PdoGsb::$monPdo->query($req);
-         $M_REP= $m_rep->fetch();
-         $m_rep = $M_REP[0];
-         
-         $resul = ($km*$m_km)+($rep*$m_rep)+($nui*$m_nui)+($etp*$m_etp);
-         /*insersion de la vraie valeur dans fiche frais*/
-          $req = "update fichefrais set `montantValide`  = '$resul' 
+        $M_REP = $m_rep->fetch();
+        $m_rep = $M_REP[0];
+
+        $resul = ($km * $m_km) + ($rep * $m_rep) + ($nui * $m_nui) + ($etp * $m_etp);
+        /* insersion de la vraie valeur dans fiche frais */
+        $req = "update fichefrais set `montantValide`  = '$resul' 
                         where fichefrais.idvisiteur ='$id' 
                         and fichefrais.mois = '$mois'";
-          PdoGsb::$monPdo->exec($req);
-         
+        PdoGsb::$monPdo->exec($req);
     }
 
     public function creerPdf() {
@@ -516,8 +529,19 @@ class PdoGsb {
         $pdf->ImprovedTable($header, $data);
         $pdf->AddPage();
         $pdf->FancyTable($header, $data);
-        ob_end_clean();//supprime le caché
+        ob_end_clean(); //supprime les espaces cachés
         $pdf->Output();
     }
+    public function setVehicule($id, $mois, $choix){
+         $req = "update fichefrais set `vehicule`  = '$choix' where fichefrais.idvisiteur ='$id' and fichefrais.mois = '$mois'";
+        PdoGsb::$monPdo->exec($req);
+    }
+    public function getMontantVehicule($vehicule){
+        $req = "select montant  from fraisforfait WHERE id='$vehicule'";
+        $montant = PdoGsb::$monPdo->query($req);
+        $laLigne = $montant->fetchAll();
+        return $laLigne;
+    }
+
 }
 ?>
