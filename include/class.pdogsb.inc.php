@@ -103,6 +103,43 @@ class PdoGsb {
         }
         return $lesLignes;
     }
+    
+      /**
+     * Retourne sous forme d'un tableau associatif toutes les lignes de frais hors forfait
+     * concernées par les deux arguments
+
+     * La boucle foreach ne peut être utilisée ici car on procède
+     * à une modification de la structure itérée - transformation du champ date-
+
+     * @param $idVisiteur 
+     * @param $mois sous la forme aaaamm
+     * @return tous les champs des lignes de frais hors forfait sous la forme d'un tableau associatif 
+     */
+    public function getLesFraisHorsForfaitNonREF($idVisiteur, $mois) {
+        $req = "select * from lignefraishorsforfait where lignefraishorsforfait.idvisiteur ='$idVisiteur' 
+		and lignefraishorsforfait.mois = '$mois' and situation = 'VAL' ";
+        $res = PdoGsb::$monPdo->query($req);
+        $lesLignes = $res->fetchAll();
+        $nbLignes = count($lesLignes);
+        for ($i = 0; $i < $nbLignes; $i++) {
+            $date = $lesLignes[$i]['date'];
+            $lesLignes[$i]['date'] = dateAnglaisVersFrancais($date);
+        }
+        return $lesLignes;
+    }
+    
+    public function getLesFraisHorsForfaitREF($idVisiteur, $mois) {
+        $req = "select * from lignefraishorsforfait where lignefraishorsforfait.idvisiteur ='$idVisiteur' 
+		and lignefraishorsforfait.mois = '$mois' and situation = 'REF' ";
+        $res = PdoGsb::$monPdo->query($req);
+        $lesLignes = $res->fetchAll();
+        $nbLignes = count($lesLignes);
+        for ($i = 0; $i < $nbLignes; $i++) {
+            $date = $lesLignes[$i]['date'];
+            $lesLignes[$i]['date'] = dateAnglaisVersFrancais($date);
+        }
+        return $lesLignes;
+    }
 
     /**
      * Retourne le nombre de justificatif d'un visiteur pour un mois donné
@@ -151,7 +188,7 @@ class PdoGsb {
 
     /**
      * 
-     * @return un tableau avec les ficeh frais a valider***********************************************************
+     * @return un tableau avec les fiche frais a valider***********************************************************
      */
     public function getLesFicheFraisAValider($mois) {
         $req = "SELECT `idVisiteur`, visiteur.nom, visiteur.prenom FROM `fichefrais` INNER JOIN visiteur 

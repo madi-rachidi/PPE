@@ -176,8 +176,12 @@ switch ($action) {
             $nomPrenomVisiteur = $pdo->getNomPrenomVisiteur($visiteur);
             /**/
             $nbJustificatifs = $pdo->getNbjustificatifs($visiteur, $dateValide);
+            
             $lesFraisForfait = $pdo->getLesFraisForfait($visiteur, $dateValide);
-            $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($visiteur, $dateValide);
+            /**/
+            $lesFraisHorsForfait = $pdo->getLesFraisHorsForfaitNonREF($visiteur, $dateValide);
+            $lesFraisHorsForfaitREF = $pdo->getLesFraisHorsForfaitREF($visiteur, $dateValide);
+            /**/
             $montantValide = $lesInfosFicheFrais['montantValide'];
             include ('vues/v_suiviFiche.php');
             // Vérification si aucune fiche n'est retournée
@@ -221,7 +225,10 @@ switch ($action) {
             /**/
             $nbJustificatifs = $pdo->getNbjustificatifs($visiteur, $dateValide);
             $lesFraisForfait = $pdo->getLesFraisForfait($visiteur, $dateValide);
-            $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($visiteur, $dateValide);
+            /**/
+            $lesFraisHorsForfait = $pdo->getLesFraisHorsForfaitNonREF($visiteur, $dateValide);
+            $lesFraisHorsForfaitREF = $pdo->getLesFraisHorsForfaitREF($visiteur, $dateValide);
+            /**/
             $montantValide = $lesInfosFicheFrais['montantValide'];
         include("vues/v_pagePdf.php");
             break;

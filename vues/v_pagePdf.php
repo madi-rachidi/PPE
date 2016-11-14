@@ -1,9 +1,4 @@
-
-<?
-//fonction php qui permet d'enregistrer le code et non pas de le lire
-php ob_start();
-
-?>
+<?php ob_start(); ?>
 <form action="index.php?uc=fraisAValider&action=rembourser" method="post">
 
     <?php
@@ -12,7 +7,7 @@ php ob_start();
     <br/>
 
     <table class="listeLegere">
-        
+
         <tr>
             <th class="libelle"> Frais Forfaitaires</th>
             <th class='montant'>Quantite</th>
@@ -49,7 +44,7 @@ php ob_start();
     <br/>
 
     <table class="listeLegere">
-        
+
         <tr>
             <th class="date">Date</th>
             <th class="libelle">Libellé</th>
@@ -66,26 +61,48 @@ php ob_start();
             $total = $total + $montant;
             ?>
             <tr>
+                <td> <?php echo $date; ?> </td>
+                <td><?php echo $libelle; ?></td>
+                <td><?php echo $montant; ?></td>
+            </tr>
+            <?php
+        }
+        ?>
+        <tr>
+            <td> montant total : <?php echo $total; ?> </td>
+        </tr>
 
-                <td>
-                    <?php echo $date; ?>
-                </td>
-                <td>
-                    <?php echo $libelle; ?>
+    </table>
+    <table class="listeLegere">
+        <tr>
+            <th class="date">Date</th>
+            <th class="libelle">Libellé</th>
+            <th class='montant'>Montant</th>
+        </tr>
 
-                </td>
-                <td>
-                    <?php echo $montant; ?>
-                </td>
-</tr>
+        <?php
+        foreach ($lesFraisHorsForfaitREF as $unFraisHorsForfait) {
+
+            $id_hf = $unFraisHorsForfait['id'];
+            $date = $unFraisHorsForfait['date'];
+            $libelle = $unFraisHorsForfait['libelle'];
+            $montant = $unFraisHorsForfait['montant'];
+            $total = $total + $montant;
+            ?>
+            <tr>
+                <td><?php echo $date; ?> </td>
+                <td><?php echo $libelle; ?> </td>
+                <td><?php echo $montant; ?></td>
                 <?php
             }
             ?>
         <tr>
             <td> montant total : <?php echo $total; ?> </td>
         </tr>
-        
+
+        </tr>
     </table>
+
 
     <br/>
     <br/>
@@ -93,7 +110,7 @@ php ob_start();
     <!-- Etat de la fiche -->
 
     <table class="listeLegere">
-        
+
         <tr>
             <th>Etat actuel</th>
         </tr>
@@ -122,8 +139,7 @@ php ob_start();
         <span>Nb justificatif : </span> <?php echo $nbJustificatifs ?>
     </div>
 </form>
-<?php 
-//met tout le code de la page dans la variable codePdf
+<?php
 $codePdf = ob_get_clean();
- $pdo->creerPdf($codePdf);
+$pdo->creerPdf($codePdf);
 ?>

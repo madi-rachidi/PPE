@@ -42,12 +42,10 @@
         }
         ?>
     </table>
-
+       <br/>
     <br/>
-    <br/>
-
-    <table class="listeLegere">
-        <caption>Descriptif des éléments hors forfait</caption>
+ <table class="listeLegere">
+        <caption>elements hors forfait</caption>
         <tr>
             <th class="date">Date</th>
             <th class="libelle">Libellé</th>
@@ -56,6 +54,45 @@
 
         <?php
         foreach ($lesFraisHorsForfait as $unFraisHorsForfait) {
+
+            $id_hf = $unFraisHorsForfait['id'];
+            $date = $unFraisHorsForfait['date'];
+            $libelle = $unFraisHorsForfait['libelle'];
+            $montant = $unFraisHorsForfait['montant'];
+            $total = $total + $montant;
+            ?>
+            <tr>
+
+                <td>
+                    <?php echo $date; ?>
+                </td>
+                <td>
+                    <?php echo $libelle; ?>
+
+                </td>
+                <td>
+                    <?php echo $montant; ?>
+                </td>
+
+                <?php
+            }
+            ?>
+        <tr>
+            <td> montant total : <?php echo $total; ?> </td>
+        </tr>
+
+        </tr>
+    </table>
+    <table class="listeLegere">
+        <caption>NON VALIDER</caption>
+        <tr>
+            <th class="date">Date</th>
+            <th class="libelle">Libellé</th>
+            <th class='montant'>Montant</th>
+        </tr>
+
+        <?php
+        foreach ($lesFraisHorsForfaitREF as $unFraisHorsForfait) {
 
             $id_hf = $unFraisHorsForfait['id'];
             $date = $unFraisHorsForfait['date'];

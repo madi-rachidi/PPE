@@ -68,10 +68,10 @@
             </table>
 
         <table class="listeLegere">
-            <caption>mettre en paiement la fiche de frais</caption>
+            <caption>Valider la fiche de frais</caption>
             <tr>
                 <td>
-                    <a href="index.php?uc=fraisAValider&action=mettreEnPaiement&idvisiteur=<?php echo"$valeur" ?>&date=<?php echo"$leMois" ?>"onclick="return confirm('Voulez-vous vraiment mettre en paiement cette fiche?');">mettre en paiement</a>
+                    <a href="index.php?uc=fraisAValider&action=mettreEnPaiement&idvisiteur=<?php echo"$valeur" ?>&date=<?php echo"$leMois" ?>"onclick="return confirm('Voulez-vous vraiment valider cette fiche?');">Valider la fiche</a>
                 </td>
             </tr>
         </table>
