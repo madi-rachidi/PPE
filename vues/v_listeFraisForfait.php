@@ -1,6 +1,5 @@
 <div id="contenu">
     <h2>Renseigner ma fiche de frais du mois <?php echo $numMois . "-" . $numAnnee ?></h2>
-
     <form method="POST"  action="index.php?uc=gererFrais&action=validerMajFraisForfait">
         <div class="corpsForm">
 
@@ -25,12 +24,6 @@
                     • 5/6CV Diesel: <input type="radio" name="choix[]" value="5CVD" <?php if($vehicule[0]=='5CVD') { echo 'checked="checked"';} ?>/><br />
                     • 4CV Essence: <input type="radio" name="choix[]" value="4CVE" <?php if($vehicule[0]=='4CVE') { echo 'checked="checked"';} ?>/><br />
                     • 5/6CV Essence: <input type="radio" name="choix[]" value="5CVE" <?php if($vehicule[0]=='5CVE') { echo 'checked="checked"';} ?>/><br />
-                   
-
-
-
-
-
             </fieldset>
         </div>
         <div class="piedForm">
@@ -39,5 +32,4 @@
                 <input id="annuler" type="reset" value="Effacer" size="20" />
             </p> 
         </div>
-
     </form>

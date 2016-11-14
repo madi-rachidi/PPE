@@ -1,7 +1,5 @@
 <div id="contenu">
-
     <h1> Suivi de paiement </h1>
-
     <form action="index.php?uc=fraisAValider&action=valideChoixFiche" method="post">
         <div class="corpsForm">
             <h3>Choisir une fiche : </h3>

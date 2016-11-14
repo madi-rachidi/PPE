@@ -291,11 +291,22 @@ class PdoGsb {
         PdoGsb::$monPdo->exec($req);
     }
 
+    /**
+     * change l'etat d'une fiche donné en RB
+     * @param type $id
+     * @param type $mois
+     */
     public function rembourserFraisForfait($id, $mois) {
         $req = "UPDATE fichefrais set idEtat = 'RB' where idvisiteur ='$id' AND mois='$mois' ";
         PdoGsb::$monPdo->exec($req);
     }
-    public function mettreEnPaiement($id,$leMois){
+
+    /**
+     * change l'etat d'une fiche en VA
+     * @param type $id
+     * @param type $leMois
+     */
+    public function mettreEnPaiement($id, $leMois) {
         $req = "UPDATE fichefrais set idEtat = 'VA' where idvisiteur ='$id' AND mois='$leMois' ";
         PdoGsb::$monPdo->exec($req);
     }
@@ -308,8 +319,15 @@ class PdoGsb {
         $resu = $res->fetchAll();
         return $resu;
     }
+
+    /**
+     * retourne la puissance du véhicule choisit pour une fiche donnée
+     * @param type $id
+     * @param type $mois
+     * @return type
+     */
     public function getVehicule($id, $mois) {
-        $req = "SELECT vehicule FROM fichefrais WHERE fichefrais.idVisiteur ='$id' AND mois ='$mois'" ;
+        $req = "SELECT vehicule FROM fichefrais WHERE fichefrais.idVisiteur ='$id' AND mois ='$mois'";
         $res = PdoGsb::$monPdo->query($req);
         $vehicule = $res->fetchAll();
         $vehicule = $vehicule[0];
@@ -435,6 +453,10 @@ class PdoGsb {
         // faire une requete update qui va modier la date de plusieurs element de la base par date
     }
 
+    /**
+     * retourne la liste des fiches qui sont vaidées
+     * @return type
+     */
     public function getFicheFraisSuivre() {
         $req = PdoGsb::$monPdo->prepare("select fichefrais.idVisiteur as v_id, fichefrais.mois as v_mois, fichefrais.montantValide as v_montant, fichefrais.idEtat, visiteur.nom as v_nom, visiteur.prenom as v_prenom
                    from fichefrais join visiteur on fichefrais.idVisiteur = visiteur.id
@@ -444,6 +466,10 @@ class PdoGsb {
         return $fiche;
     }
 
+    /**
+     * Retourne tout les nom,prenom et l'id dans la table visiteur
+     * @return type
+     */
     public function getNomPrenomIdVisiteur() {
         $req = "select visiteur.nom as nom, visiteur.prenom as prenom, visiteur.id as id from visiteur";
         $res = PdoGsb::$monPdo->query($req);
@@ -451,15 +477,20 @@ class PdoGsb {
         return $res;
     }
 
+    /**
+     * Retourne le nom le prenom du visiteur en fonction de sont identifiant
+     * @param type $pid
+     * @return type
+     */
     public function getNomPrenomVisiteur($pid) {
-        $req = "select visiteur.nom as nom, visiteur.prenom as prenom from visiteur where id = " . $pid . ";";
+        $req = "select visiteur.nom as nom, visiteur.prenom as prenom from visiteur where id ='$pid'";
         $res = PdoGsb::$monPdo->query($req);
-        //$nom = $rs->fetch();
+        $res = $res->fetch();
         return $res;
     }
 
     /**
-     * pertmet de mettre a jour montant reel des faire forfais
+     * permet de mettre a jour montant reel des faire forfais
      * @param type $id
      * @param type $mois
      */
@@ -513,34 +544,33 @@ class PdoGsb {
         PdoGsb::$monPdo->exec($req);
     }
 
-    public function creerPdf() {
-        require('fpdf/fpdf.php');
-        require('fpdf/tabPdf.php');
-
-        $pdf = new PDF();
-// Titres des colonnes
-        $header = array('Pays', 'Capitale', 'Superficie (km²)', 'Pop. (milliers)');
-// Chargement des données
-        $data = $pdf->LoadData('pays.txt');
-        $pdf->SetFont('Arial', '', 14);
-        $pdf->AddPage();
-        $pdf->BasicTable($header, $data);
-        $pdf->AddPage();
-        $pdf->ImprovedTable($header, $data);
-        $pdf->AddPage();
-        $pdf->FancyTable($header, $data);
-        ob_end_clean(); //supprime les espaces cachés
-        $pdf->Output();
-    }
-    public function setVehicule($id, $mois, $choix){
-         $req = "update fichefrais set `vehicule`  = '$choix' where fichefrais.idvisiteur ='$id' and fichefrais.mois = '$mois'";
+    public function setVehicule($id, $mois, $choix) {
+        $req = "update fichefrais set `vehicule`  = '$choix' where fichefrais.idvisiteur ='$id' and fichefrais.mois = '$mois'";
         PdoGsb::$monPdo->exec($req);
     }
-    public function getMontantVehicule($vehicule){
+
+    /**
+     * Retourne le montant de l'indemnité en fonction de sa puissance
+     * @param type $vehicule
+     * @return type
+     */
+    public function getMontantVehicule($vehicule) {
         $req = "select montant  from fraisforfait WHERE id='$vehicule'";
         $montant = PdoGsb::$monPdo->query($req);
         $laLigne = $montant->fetchAll();
         return $laLigne;
+    }
+
+    /**
+     * creer la page pdf
+     * @param type $codePdf
+     */
+    public function creerPdf($codePdf) {
+        require_once("html2pdf/vendor/autoload.php");
+        $pdf = new HTML2PDF('P', 'A4', 'fr', 'true', 'UTF-8');
+        $pdf->writeHTML($codePdf);
+        ob_end_clean(); //supprime les espaces cachés
+        $pdf->Output('pdf.pdf');
     }
 
 }

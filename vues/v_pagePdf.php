@@ -1,16 +1,18 @@
+
+<?
+//fonction php qui permet d'enregistrer le code et non pas de le lire
+php ob_start();
+
+?>
 <form action="index.php?uc=fraisAValider&action=rembourser" method="post">
 
-    <input type='hidden' name='in_user' value='<?php echo $visiteur; ?>' />
-    <input type='hidden' name='in_mois' value='<?php echo $dateValide; ?>' />
-    <br/>
     <?php
     $infos = $pdo->getNomPrenomVisiteur($visiteur);
     ?> <h2><?php echo "Fiche de : " . $infos['nom'] . " " . $infos["prenom"]; ?></h2>
-
     <br/>
 
     <table class="listeLegere">
-        <caption>Eléments forfaitisés</caption>
+        
         <tr>
             <th class="libelle"> Frais Forfaitaires</th>
             <th class='montant'>Quantite</th>
@@ -47,7 +49,7 @@
     <br/>
 
     <table class="listeLegere">
-        <caption>Descriptif des éléments hors forfait</caption>
+        
         <tr>
             <th class="date">Date</th>
             <th class="libelle">Libellé</th>
@@ -75,15 +77,14 @@
                 <td>
                     <?php echo $montant; ?>
                 </td>
-
+</tr>
                 <?php
             }
             ?>
         <tr>
             <td> montant total : <?php echo $total; ?> </td>
         </tr>
-
-        </tr>
+        
     </table>
 
     <br/>
@@ -92,7 +93,7 @@
     <!-- Etat de la fiche -->
 
     <table class="listeLegere">
-        <caption>Etat de la fiche de frais</caption>
+        
         <tr>
             <th>Etat actuel</th>
         </tr>
@@ -100,9 +101,9 @@
             <td>
                 <?php
                 $etat_actuel = $lesInfosFicheFrais['libEtat'];
-
                 echo $etat_actuel;
                 ?>
+
                 <input type='hidden' name='etat_defaut' value='<?php echo $etat_actuel; ?>' />
             </td>
         </tr>
@@ -119,18 +120,10 @@
 
         <p class="titre"></p>
         <span>Nb justificatif : </span> <?php echo $nbJustificatifs ?>
-
-        <br />
-        <br />
-
-        <input value="Rembourser" class="zone"type="submit" />
-
-        <br />
-        <br />
-        <a href="index.php?uc=fraisAValider&action=pdf&id=<?php echo $visiteur; ?>&date=<?php echo $dateValide; ?>"><img id=supp src="images/pdf.png" alt="pdf" /> </a>
-
-        <br />
-        <br /> 
-
     </div>
 </form>
+<?php 
+//met tout le code de la page dans la variable codePdf
+$codePdf = ob_get_clean();
+ $pdo->creerPdf($codePdf);
+?>

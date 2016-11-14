@@ -156,6 +156,7 @@ switch ($action) {
             break;
         }
     case 'suiviPaiement': {
+        // récuperation de toutes les fiches qui sont 'VA'
             $listeFichesFrais = $pdo->getFicheFraisSuivre();
             include("vues/v_suiviFiche.php");
             break;
@@ -165,12 +166,12 @@ switch ($action) {
             // On récupère le visiteur et le mois
             $dateValide = substr($_REQUEST['lstVisiteur'], 0, 6);
             $visiteur = substr($_REQUEST['lstVisiteur'], 6, strlen($_REQUEST['lstVisiteur']));
-
+            //le type de véhicule du visiteur
             $vehicule = $pdo->getVehicule($visiteur, $dateValide);
             $montant1 = $pdo->getMontantVehicule($vehicule[0]);
             // On récupère toutes les infos de la fiche du visiteur pour le mois
             $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($visiteur, $dateValide);
-            /**/
+            /*retourne les nom des visiteurs*/
             $listeVisiteur = $pdo->getNomPrenomIdVisiteur();
             $nomPrenomVisiteur = $pdo->getNomPrenomVisiteur($visiteur);
             /**/
@@ -207,7 +208,22 @@ switch ($action) {
             break;
         }
     case'pdf': {
-            $pdo->creerPdf();
+          //  $pdo->creerPdf();
+        $dateValide = $_REQUEST['date'];
+        $visiteur = $_REQUEST['id'];
+            $vehicule = $pdo->getVehicule($visiteur, $dateValide);
+            $montant1 = $pdo->getMontantVehicule($vehicule[0]);
+            // On récupère toutes les infos de la fiche du visiteur pour le mois
+            $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($visiteur, $dateValide);
+            /**/
+            $listeVisiteur = $pdo->getNomPrenomIdVisiteur();
+            $nomPrenomVisiteur = $pdo->getNomPrenomVisiteur($visiteur);
+            /**/
+            $nbJustificatifs = $pdo->getNbjustificatifs($visiteur, $dateValide);
+            $lesFraisForfait = $pdo->getLesFraisForfait($visiteur, $dateValide);
+            $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($visiteur, $dateValide);
+            $montantValide = $lesInfosFicheFrais['montantValide'];
+        include("vues/v_pagePdf.php");
             break;
         }
 }
